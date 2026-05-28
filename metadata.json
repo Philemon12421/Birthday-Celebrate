@@ -1,0 +1,6 @@
+{
+  "name": "Drenchack Tech Birthday Surprise",
+  "description": "An interactive, elegant, and cinematic birthday surprise celebration experience in luxury gold and white, made by Drenchack Tech.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
