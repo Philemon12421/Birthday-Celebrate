@@ -206,7 +206,7 @@ export default function PhotoGallery({ onComplete }: PhotoGalleryProps) {
         </AnimatePresence>
 
         {/* Floating Side Carousels Navigation Arrows */}
-        <div className="absolute inset-y-1/2 -left-12 -right-12 flex justify-between items-center pointer-events-none z-30">
+        <div className="absolute inset-y-1/2 -left-2 sm:-left-12 -right-2 sm:-right-12 flex justify-between items-center pointer-events-none z-30">
           <motion.button
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}

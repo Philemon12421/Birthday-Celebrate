@@ -212,7 +212,7 @@ export default function CardStoryteller({ currentStep, onNext, onReset }: CardSt
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -30, scale: 0.98 }}
             transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className={`w-full ${currentStep === 'PHOTO' ? 'max-w-[510px]' : 'max-w-[500px]'} bg-white/90 backdrop-blur-md border border-amber-100/60 rounded-[30px] shadow-[0_20px_50px_rgba(218,165,32,0.08)] p-6 md:p-8 flex flex-col items-center text-center relative pointer-events-auto overflow-hidden`}
+            className={`w-full ${currentStep === 'PHOTO' ? 'max-w-[510px]' : 'max-w-[500px]'} bg-white/90 backdrop-blur-md border border-amber-100/60 rounded-[24px] sm:rounded-[30px] shadow-[0_20px_50px_rgba(218,165,32,0.08)] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center relative pointer-events-auto overflow-hidden`}
           >
             {/* Top Header Grid Accent */}
             <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-amber-100 via-amber-400 to-amber-100" />
@@ -775,7 +775,7 @@ export default function CardStoryteller({ currentStep, onNext, onReset }: CardSt
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full max-w-[500px] bg-white/95 backdrop-blur-md border border-amber-100 rounded-[35px] shadow-[0_30px_70px_rgba(218,165,32,0.12)] p-10 md:p-14 flex flex-col items-center text-center relative pointer-events-auto"
+            className="w-full max-w-[500px] bg-white/95 backdrop-blur-md border border-amber-100 rounded-[28px] sm:rounded-[35px] shadow-[0_30px_70px_rgba(218,165,32,0.12)] p-6 sm:p-10 md:p-14 flex flex-col items-center text-center relative pointer-events-auto"
           >
             {/* Top golden lines style */}
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100" />

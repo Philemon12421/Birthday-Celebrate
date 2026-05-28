@@ -65,8 +65,8 @@ export default function App() {
             className="relative min-h-[500px] w-full flex flex-col items-center justify-center text-center z-10 px-6 select-none pointer-events-none py-12"
           >
             {/* Elegant Outer Circular Dashed Rings */}
-            <div className="absolute w-[360px] h-[360px] md:w-[420px] md:h-[420px] border border-amber-300/20 rounded-full animate-[spin_50s_linear_infinite] pointer-events-none" />
-            <div className="absolute w-[320px] h-[320px] md:w-[385px] md:h-[385px] border-2 border-dashed border-amber-200/20 rounded-full animate-[spin_40s_linear_infinite_reverse] pointer-events-none" />
+            <div className="absolute w-[290px] h-[290px] sm:w-[360px] sm:h-[360px] md:w-[420px] md:h-[420px] border border-amber-300/20 rounded-full animate-[spin_50s_linear_infinite] pointer-events-none" />
+            <div className="absolute w-[265px] h-[265px] sm:w-[320px] sm:h-[320px] md:w-[385px] md:h-[385px] border-2 border-dashed border-amber-200/20 rounded-full animate-[spin_40s_linear_infinite_reverse] pointer-events-none" />
 
             {/* Glowing Golden Center Aura */}
             <div className="absolute w-[180px] h-[180px] rounded-full bg-amber-100/30 blur-3xl pointer-events-none animate-pulse" />
