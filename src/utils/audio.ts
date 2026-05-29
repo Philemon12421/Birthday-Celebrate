@@ -5,7 +5,7 @@
 
 // ─── SONG DEFINITIONS ────────────────────────────────────────────────────────
 // Each song is an array of [frequency_hz, beat_duration_seconds]
-// Tempo is applied at playback time.
+// Tempo is applied at playback time. 
 
 type SongId = 'BIRTHDAY_SIMI' | 'SEVEN_YEARS' | 'LOVE_IS_GONE';
 
