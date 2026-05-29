@@ -3,197 +3,220 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight, Heart, Play, Pause } from 'lucide-react';
 
+/**
+ * ─── YOUR GITHUB IMAGES ───────────────────────────────────────────────────────
+ * Update BASE_URL to your repo path. The four image filenames match what you
+ * uploaded to /public/ in your GitHub repo:
+ *   IMG_20260529_135235_489.jpg
+ *   IMG_20260529_135235_576.jpg
+ *   IMG_20260529_135235_717.jpg
+ *   IMG_20260529_135250_060.jpg
+ *
+ * If you're running locally (Vite), just put the files in /public/ and they'll
+ * be served at /IMG_20260529_135235_489.jpg etc.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+const BASE_URL = '/'; // Vite public folder — images served at root
+
+const GALLERY_IMAGES = [
+  `${BASE_URL}IMG_20260529_135235_489.jpg`,
+  `${BASE_URL}IMG_20260529_135235_576.jpg`,
+  `${BASE_URL}IMG_20260529_135235_717.jpg`,
+  `${BASE_URL}IMG_20260529_135250_060.jpg`,
+];
+
 interface GalleryItem {
   id: string;
+  imageUrl: string;
   defaultTitle: string;
   defaultCaption: string;
   celebrationContent: string;
   themeColor: string;
-  defaultImage: string;
-  illustrationSvg: React.ReactNode;
+  tiltDeg: number; // polaroid rotation
 }
 
 interface PhotoGalleryProps {
   onComplete?: () => void;
 }
 
-export default function PhotoGallery({ onComplete }: PhotoGalleryProps) {
-  const [items] = useState<GalleryItem[]>([
-    {
-      id: 'gallery-item-1',
-      defaultTitle: 'A Brilliant Horizon',
-      defaultCaption: 'Capturing the golden essence of new paths and infinite opportunities.',
-      celebrationContent: 'May your steps always fall on paths of brilliant inspiration and endless success! You bring deep wisdom and strength to everyone you walk alongside.',
-      themeColor: 'from-amber-200 to-yellow-100',
-      defaultImage: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=600&auto=format&fit=crop',
-      illustrationSvg: (
-        <svg className="w-full h-full text-amber-500/80" viewBox="0 0 100 100" fill="none">
-          <circle cx="50" cy="50" r="30" className="stroke-amber-300 stroke-[1.5]" strokeDasharray="3 3" />
-          <path d="M 25 70 C 40 50, 60 55, 75 70" className="stroke-amber-400 stroke-2" fill="none" />
-          <path d="M 20 85 C 40 70, 60 75, 80 85" className="stroke-amber-550 stroke-[2.5]" fill="none" />
-          <circle cx="50" cy="40" r="10" className="fill-amber-300" />
-          <path d="M 50 15 L 50 22 M 50 58 L 50 65 M 25 40 L 32 40 M 68 40 L 75 40" className="stroke-amber-400 stroke-[1.5]" />
-        </svg>
-      )
-    },
-    {
-      id: 'gallery-item-2',
-      defaultTitle: 'Moments of Pure Joy',
-      defaultCaption: 'The heartwarming laughter that echoes in our happiest times.',
-      celebrationContent: 'Here is to the unforgettable sparkles in your eyes when you laugh, for they kindle a warm fire of gladness in everyone honored to share your space!',
-      themeColor: 'from-rose-200 to-pink-100',
-      defaultImage: 'https://images.unsplash.com/photo-1496843916299-fc0902249513?q=80&w=600&auto=format&fit=crop',
-      illustrationSvg: (
-        <svg className="w-full h-full text-pink-500/80" viewBox="0 0 100 100" fill="none">
-          <path d="M 50 78 C 25 50, 25 35, 50 20 C 75 35, 75 50, 50 78 Z" className="fill-pink-200 stroke-pink-300 stroke-[1.5]" />
-          <circle cx="28" cy="22" r="1.5" className="fill-pink-400" />
-          <circle cx="72" cy="65" r="2" className="fill-pink-300" />
-          <path d="M 40 45 Q 50 58 60 45" className="stroke-pink-500/80 stroke-2" strokeLinecap="round" fill="none" />
-        </svg>
-      )
-    },
-    {
-      id: 'gallery-item-3',
-      defaultTitle: 'Peace & Serenity',
-      defaultCaption: 'Finding a perfectly quiet oasis amidst this bustling adventure.',
-      celebrationContent: 'Wishing you beautifully peaceful waters, calm mornings, and quiet milestones that glow from the inside out with absolute celestial harmony.',
-      themeColor: 'from-sky-200 to-indigo-100',
-      defaultImage: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=600&auto=format&fit=crop',
-      illustrationSvg: (
-        <svg className="w-full h-full text-sky-500/80" viewBox="0 0 100 100" fill="none">
-          <path d="M 15 75 Q 35 60 50 75 T 85 75" className="stroke-sky-300 stroke-2" fill="none" />
-          <path d="M 10 85 Q 30 75 50 85 T 90 85" className="stroke-sky-400 stroke-[1.5]" fill="none" />
-          <path d="M 45 42 L 55 42 M 50 35 L 50 49 M 42 45 C 42 45, 50 30, 58 45" className="stroke-sky-500 stroke-[1.5]" fill="none" />
-          <circle cx="80" cy="25" r="3" className="fill-sky-100" />
-        </svg>
-      )
-    },
-    {
-      id: 'gallery-item-4',
-      defaultTitle: 'Infinite Spark of Wonder',
-      defaultCaption: 'Unleashing radiant creativity and watching dreams materialize.',
-      celebrationContent: 'May your magical imagination continue to spark brilliant wonders and illuminate the path toward every single one of your magnificent dreams!',
-      themeColor: 'from-amber-100 to-indigo-200',
-      defaultImage: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=600&auto=format&fit=crop',
-      illustrationSvg: (
-        <svg className="w-full h-full text-indigo-500/80" viewBox="0 0 100 100" fill="none">
-          <polygon points="50,15 54,32 71,32 57,42 62,59 50,49 38,59 43,42 29,32 46,32" className="fill-indigo-200 stroke-indigo-300 stroke-[1.5]" />
-          <circle cx="20" cy="25" r="1.5" className="fill-indigo-300" />
-          <circle cx="82" cy="70" r="1" className="fill-amber-400" />
-          <circle cx="15" cy="80" r="2" className="fill-amber-300" />
-        </svg>
-      )
-    }
-  ]);
+const ITEMS: GalleryItem[] = [
+  {
+    id: 'gallery-item-1',
+    imageUrl: GALLERY_IMAGES[0],
+    defaultTitle: 'A Brilliant Horizon',
+    defaultCaption: 'Capturing the golden essence of new paths and infinite opportunities.',
+    celebrationContent:
+      'May your steps always fall on paths of brilliant inspiration and endless success! You bring deep wisdom and strength to everyone you walk alongside.',
+    themeColor: 'from-amber-200 to-yellow-100',
+    tiltDeg: 1.5,
+  },
+  {
+    id: 'gallery-item-2',
+    imageUrl: GALLERY_IMAGES[1],
+    defaultTitle: 'Moments of Pure Joy',
+    defaultCaption: 'The heartwarming laughter that echoes in our happiest times.',
+    celebrationContent:
+      'Here is to the unforgettable sparkles in your eyes when you laugh, for they kindle a warm fire of gladness in everyone honored to share your space!',
+    themeColor: 'from-rose-200 to-pink-100',
+    tiltDeg: -1.2,
+  },
+  {
+    id: 'gallery-item-3',
+    imageUrl: GALLERY_IMAGES[2],
+    defaultTitle: 'Peace & Serenity',
+    defaultCaption: 'Finding a perfectly quiet oasis amidst this bustling adventure.',
+    celebrationContent:
+      'Wishing you beautifully peaceful waters, calm mornings, and quiet milestones that glow from the inside out with absolute celestial harmony.',
+    themeColor: 'from-sky-200 to-indigo-100',
+    tiltDeg: 2.0,
+  },
+  {
+    id: 'gallery-item-4',
+    imageUrl: GALLERY_IMAGES[3],
+    defaultTitle: 'Infinite Spark of Wonder',
+    defaultCaption: 'Unleashing radiant creativity and watching dreams materialize.',
+    celebrationContent:
+      'May your magical imagination continue to spark brilliant wonders and illuminate the path toward every single one of your magnificent dreams!',
+    themeColor: 'from-amber-100 to-indigo-200',
+    tiltDeg: -0.8,
+  },
+];
 
+export default function PhotoGallery({ onComplete }: PhotoGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const autoPlayRef = useRef(autoPlay);
+  autoPlayRef.current = autoPlay;
 
-  // Auto swapping rotation effect (slide interval)
   useEffect(() => {
     if (!autoPlay) return;
     const interval = setInterval(() => {
       setActiveIndex((prev) => {
-        if (prev === items.length - 1) {
-          // Reached the end of the items loop! Call onComplete to advance to the next step
-          if (onComplete) {
-            clearInterval(interval);
-            setTimeout(() => {
-              onComplete();
-            }, 1000); // 1s beautiful fade layout delay
-            return prev;
-          }
-          return 0; // fallback loop
+        if (prev === ITEMS.length - 1) {
+          clearInterval(interval);
+          if (onComplete) setTimeout(onComplete, 1000);
+          return prev;
         }
         return prev + 1;
       });
-    }, 4500); // Swaps every 4.5 seconds
-
+    }, 4500);
     return () => clearInterval(interval);
-  }, [autoPlay, items.length, onComplete]);
+  }, [autoPlay, onComplete]);
 
   const goPrev = () => {
-    setAutoPlay(false); // Pause so user has control
-    setActiveIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
+    setAutoPlay(false);
+    setActiveIndex((prev) => (prev === 0 ? ITEMS.length - 1 : prev - 1));
   };
 
   const goNext = () => {
-    setAutoPlay(false); // Pause so user has control
+    setAutoPlay(false);
     setActiveIndex((prev) => {
-      if (prev === items.length - 1) {
-        if (onComplete) {
-          onComplete();
-          return prev;
-        }
-        return 0;
-      }
+      if (prev === ITEMS.length - 1) { if (onComplete) onComplete(); return prev; }
       return prev + 1;
     });
   };
 
-  const currentItem = items[activeIndex];
+  const currentItem = ITEMS[activeIndex];
 
   return (
     <div className="w-full flex flex-col items-center select-none">
-      {/* Slide Controls and Pagination Header */}
+      {/* Progress header */}
       <div className="flex items-center justify-between w-full mb-4 px-2">
         <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-mono tracking-widest text-amber-600/80 uppercase select-none">
-            Memory {activeIndex + 1} of {items.length}
+          <span className="text-[10px] font-mono tracking-widest text-amber-600/80 uppercase">
+            Memory {activeIndex + 1} of {ITEMS.length}
           </span>
           <button
             onClick={() => setAutoPlay(!autoPlay)}
             className="w-5 h-5 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 flex items-center justify-center transition-colors outline-none cursor-pointer"
-            title={autoPlay ? "Pause Slideshow" : "Start Slideshow"}
+            title={autoPlay ? 'Pause Slideshow' : 'Start Slideshow'}
           >
             {autoPlay ? <Pause className="w-2.5 h-2.5 stroke-[2.5]" /> : <Play className="w-2.5 h-2.5 stroke-[2.5]" />}
           </button>
         </div>
         <div className="flex gap-1.5 items-center">
-          {items.map((_, idx) => (
+          {ITEMS.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => {
-                setAutoPlay(false); // User selected manually
-                setActiveIndex(idx);
-              }}
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 pointer-events-auto cursor-pointer ${
-                idx === activeIndex ? 'bg-amber-500 w-4' : 'bg-amber-200'
+              onClick={() => { setAutoPlay(false); setActiveIndex(idx); }}
+              className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                idx === activeIndex ? 'bg-amber-500 w-4' : 'bg-amber-200 w-1.5'
               }`}
             />
           ))}
         </div>
       </div>
 
-      {/* Main Photographic Polaroid Framing */}
-      <div className="relative w-full aspect-[4/5] sm:aspect-[1/1.2] max-w-[340px] mb-6 pointer-events-auto">
+      {/* Polaroid frame */}
+      <div
+        className="relative w-full aspect-[4/5] sm:aspect-[1/1.2] max-w-[340px] mb-6 pointer-events-auto"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={currentItem.id}
-            initial={{ opacity: 0, scale: 0.94, rotate: -1.5, y: 10 }}
-            animate={{ opacity: 1, scale: 1, rotate: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, rotate: -2, y: -10 }}
+            initial={{ opacity: 0, scale: 0.9, rotate: -4, y: 20 }}
+            animate={{
+              opacity: 1,
+              scale: isHovered ? 1.03 : 1,
+              rotate: isHovered ? 0 : currentItem.tiltDeg,
+              y: isHovered ? -8 : 0,
+            }}
+            exit={{ opacity: 0, scale: 0.9, rotate: 4, y: -20 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full bg-white rounded-3xl p-4 shadow-[0_15px_35px_rgba(218,165,32,0.1)] border border-amber-100/50 flex flex-col items-center justify-between relative"
+            className="w-full h-full bg-white rounded-3xl p-4 flex flex-col items-center justify-between relative"
+            style={{
+              boxShadow: isHovered
+                ? '0 28px 50px rgba(218,165,32,0.22), 0 8px 20px rgba(0,0,0,0.08)'
+                : '0 15px 35px rgba(218,165,32,0.1), 0 4px 12px rgba(0,0,0,0.04)',
+              transition: 'box-shadow 0.4s ease',
+              border: '1px solid rgba(251,191,36,0.15)',
+            }}
           >
-            {/* Hanging / Decorative Golden Clip Effect */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-10 h-6 bg-gradient-to-b from-amber-200/50 to-amber-300/10 rounded-t-lg border-t border-amber-300/20 shadow-inner z-20 pointer-events-none" />
+            {/* Golden clip at top */}
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-10 h-6 bg-gradient-to-b from-amber-200/60 to-amber-300/10 rounded-t-lg border-t border-amber-300/30 shadow-inner z-20 pointer-events-none" />
 
-            {/* Inner Photo Display Frame */}
-            <div className={`w-full aspect-square rounded-2xl overflow-hidden border border-amber-150/50 relative flex flex-col items-center justify-center transition-all duration-300 bg-gradient-to-br ${currentItem.themeColor}`}>
+            {/* Shimmer overlay on hover */}
+            {isHovered && (
+              <motion.div
+                initial={{ opacity: 0, x: '-100%' }}
+                animate={{ opacity: 1, x: '200%' }}
+                transition={{ duration: 0.8, ease: 'easeInOut' }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-3xl pointer-events-none z-30"
+              />
+            )}
+
+            {/* Photo */}
+            <div
+              className={`w-full aspect-square rounded-2xl overflow-hidden relative bg-gradient-to-br ${currentItem.themeColor}`}
+              style={{ border: '1px solid rgba(251,191,36,0.15)' }}
+            >
               <img
-                src={currentItem.defaultImage}
+                src={currentItem.imageUrl}
                 alt={currentItem.defaultTitle}
                 referrerPolicy="no-referrer"
-                className="w-full h-full object-cover transition-all duration-300 select-none pointer-events-none"
+                className="w-full h-full object-cover select-none pointer-events-none"
+                style={{
+                  filter: isHovered ? 'brightness(1.05) saturate(1.1)' : 'brightness(1) saturate(1)',
+                  transition: 'filter 0.4s ease',
+                }}
+                onError={(e) => {
+                  // Fallback gradient if image fails to load
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
               />
+              {/* Vignette overlay */}
+              <div className="absolute inset-0 rounded-2xl pointer-events-none"
+                style={{background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.12) 100%)'}} />
             </div>
 
-            {/* Polaroid handwritten-styled celebration caption under image */}
+            {/* Caption */}
             <div className="w-full pt-4 pb-2 text-center overflow-hidden">
               <h3 className="font-serif text-amber-800 text-sm font-semibold tracking-wide mb-1.5">
                 {currentItem.defaultTitle}
@@ -205,13 +228,13 @@ export default function PhotoGallery({ onComplete }: PhotoGalleryProps) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Floating Side Carousels Navigation Arrows */}
+        {/* Nav arrows */}
         <div className="absolute inset-y-1/2 -left-2 sm:-left-12 -right-2 sm:-right-12 flex justify-between items-center pointer-events-none z-30">
           <motion.button
             whileHover={{ scale: 1.15, x: -2 }}
             whileTap={{ scale: 0.9 }}
             onClick={goPrev}
-            className="w-9 h-9 rounded-full bg-white/95 border border-amber-200/60 shadow-md text-amber-600 flex items-center justify-center pointer-events-auto cursor-pointer outline-none hover:text-amber-700 active:scale-95"
+            className="w-9 h-9 rounded-full bg-white/95 border border-amber-200/60 shadow-md text-amber-600 flex items-center justify-center pointer-events-auto cursor-pointer outline-none hover:text-amber-700"
           >
             <ChevronLeft className="w-5 h-5" />
           </motion.button>
@@ -219,15 +242,15 @@ export default function PhotoGallery({ onComplete }: PhotoGalleryProps) {
             whileHover={{ scale: 1.15, x: 2 }}
             whileTap={{ scale: 0.9 }}
             onClick={goNext}
-            className="w-9 h-9 rounded-full bg-white/95 border border-amber-200/60 shadow-md text-amber-600 flex items-center justify-center pointer-events-auto cursor-pointer outline-none hover:text-amber-700 active:scale-95"
+            className="w-9 h-9 rounded-full bg-white/95 border border-amber-200/60 shadow-md text-amber-600 flex items-center justify-center pointer-events-auto cursor-pointer outline-none hover:text-amber-700"
           >
             <ChevronRight className="w-5 h-5" />
           </motion.button>
         </div>
       </div>
 
-      {/* Nice Celebration Content below Polaroid Frame with clean scale effect */}
-      <div className="w-full min-h-[90px] bg-gradient-to-b from-amber-50/20 to-transparent border-t border-amber-200/10 pt-4 px-2 select-text">
+      {/* Celebration message */}
+      <div className="w-full min-h-[90px] border-t border-amber-200/10 pt-4 px-2 select-text">
         <div className="flex justify-center gap-1.5 mb-2.5">
           <Heart className="w-4 h-4 text-rose-400 fill-rose-300 animate-pulse" />
           <span className="text-[10px] font-mono tracking-widest text-amber-600/90 uppercase font-semibold">
@@ -238,10 +261,11 @@ export default function PhotoGallery({ onComplete }: PhotoGalleryProps) {
         <AnimatePresence mode="wait">
           <motion.p
             key={currentItem.id}
-            initial={{ opacity: 0, y: 5 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            className="text-gray-650 text-xs leading-relaxed font-sans font-light italic text-center max-w-[340px] mx-auto select-none"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.5 }}
+            className="text-gray-600 text-xs leading-relaxed font-sans font-light italic text-center max-w-[340px] mx-auto select-none"
           >
             "{currentItem.celebrationContent}"
           </motion.p>
