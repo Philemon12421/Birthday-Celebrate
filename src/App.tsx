@@ -14,113 +14,249 @@ import CardStoryteller from './components/CardStoryteller';
 export default function App() {
   const [step, setStep] = useState<ExperienceStep>('SPLASH');
 
-  // Ensure Audio Context stops when the window shuts down/cleanups
   useEffect(() => {
-    return () => {
-      musicEngine.stop();
-    };
+    return () => { musicEngine.stop(); };
   }, []);
 
-  // Handle entry transition trigger and prompt music context play
   const handleStartExperience = () => {
-    // Play harp glide transition chime
     musicEngine.playSparkleTransition();
-    
-    // Start synthesizers Loop sequence
     musicEngine.start();
-    
-    // Move to first story popup
     setStep('INTRO');
   };
 
-  // Reset storyteller sequencing and return to splash safely (turns off audio or leaves active as preferred)
   const handleResetExperience = () => {
     musicEngine.stop();
     setStep('SPLASH');
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-white flex flex-col items-center justify-center font-sans text-gray-800 overflow-y-auto overflow-x-hidden py-4 sm:py-8">
-      
-      {/* High-Performance floating gold/white sparkle & balloon canvas background */}
+    <div style={{
+      position: 'relative',
+      minHeight: '100vh',
+      width: '100%',
+      background: 'linear-gradient(135deg, #fffdf5 0%, #fff9e6 40%, #fffbf0 70%, #fefefe 100%)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: "'Poppins', system-ui, sans-serif",
+      color: '#1f2937',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+      padding: '2rem 0',
+    }}>
+      {/* Particle canvas background */}
       <ParticleCanvas />
 
-      {/* Ambient background glowing gold halos */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vh] rounded-full bg-amber-100/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vh] rounded-full bg-amber-100/10 blur-[120px] pointer-events-none" />
+      {/* Soft gold halo blobs */}
+      <div style={{
+        position: 'absolute', top: '-10%', left: '-10%',
+        width: '50vw', height: '50vh', borderRadius: '50%',
+        background: 'rgba(251,191,36,0.07)', filter: 'blur(100px)',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '-10%', right: '-10%',
+        width: '50vw', height: '50vh', borderRadius: '50%',
+        background: 'rgba(253,224,71,0.06)', filter: 'blur(100px)',
+        pointerEvents: 'none',
+      }} />
 
-      {/* MAIN SCREEN CO-ORDINATOR */}
       <AnimatePresence mode="wait">
         {step === 'SPLASH' && (
           <motion.div
-            id="splash-screen"
             key="splash"
             initial={{ opacity: 1, scale: 1 }}
-            exit={{ 
-              opacity: 0, 
-              scale: 1.1,
-              filter: 'blur(10px)'
-            }}
+            exit={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
             transition={{ duration: 1.0, ease: [0.33, 1, 0.68, 1] }}
-            className="relative min-h-[500px] w-full flex flex-col items-center justify-center text-center z-10 px-6 select-none pointer-events-none py-12"
+            style={{
+              position: 'relative',
+              minHeight: 500,
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              zIndex: 10,
+              padding: '3rem 1.5rem',
+              userSelect: 'none',
+              pointerEvents: 'none',
+            }}
           >
-            {/* Elegant Outer Circular Dashed Rings */}
-            <div className="absolute w-[290px] h-[290px] sm:w-[360px] sm:h-[360px] md:w-[420px] md:h-[420px] border border-amber-300/20 rounded-full animate-[spin_50s_linear_infinite] pointer-events-none" />
-            <div className="absolute w-[265px] h-[265px] sm:w-[320px] sm:h-[320px] md:w-[385px] md:h-[385px] border-2 border-dashed border-amber-200/20 rounded-full animate-[spin_40s_linear_infinite_reverse] pointer-events-none" />
-
-            {/* Glowing Golden Center Aura */}
-            <div className="absolute w-[180px] h-[180px] rounded-full bg-amber-100/30 blur-3xl pointer-events-none animate-pulse" />
-
-            {/* Title display layout with space tracking */}
+            {/* Spinning outer ring 1 */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                width: 360, height: 360,
+                border: '1px solid rgba(251,191,36,0.25)',
+                borderRadius: '50%',
+                pointerEvents: 'none',
+              }}
+            />
+            {/* Spinning outer ring 2 — dashed, reverse */}
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                width: 320, height: 320,
+                border: '1.5px dashed rgba(251,191,36,0.3)',
+                borderRadius: '50%',
+                pointerEvents: 'none',
+              }}
+            />
+            {/* Inner glow ring */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                width: 270, height: 270,
+                border: '1px solid rgba(251,191,36,0.15)',
+                borderRadius: '50%',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Golden center aura glow */}
+            <motion.div
+              animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.55, 0.3] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                position: 'absolute',
+                width: 200, height: 200,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(251,191,36,0.35) 0%, rgba(253,224,71,0.15) 50%, transparent 80%)',
+                filter: 'blur(30px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Title block */}
+            <motion.div
+              initial={{ opacity: 0, y: -24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 1.2 }}
-              className="flex flex-col items-center gap-2 mb-10 z-10"
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, marginBottom: 40, zIndex: 10 }}
             >
-              <div className="flex items-center gap-1 text-[11px] font-mono tracking-[0.22em] text-amber-600/80 uppercase font-semibold">
-                <Sparkles className="w-3.5 h-3.5 shrink-0 fill-amber-300 stroke-amber-500 animate-spin" style={{ animationDuration: '4s' }} />
+              {/* Premium label */}
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                fontSize: 11, fontFamily: 'Courier New, monospace',
+                letterSpacing: '0.22em', color: 'rgba(180,100,20,0.85)',
+                textTransform: 'uppercase', fontWeight: 600,
+              }}>
+                <Sparkles style={{
+                  width: 14, height: 14, flexShrink: 0,
+                  fill: '#FCD34D', stroke: '#D97706',
+                  animation: 'spin 4s linear infinite',
+                }} />
                 Premium Surprise
               </div>
-              <h1 className="font-serif text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-normal mt-2">
+
+              {/* Main heading */}
+              <h1 style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: 'clamp(26px, 5vw, 42px)',
+                fontWeight: 900,
+                color: '#111827',
+                letterSpacing: '-0.02em',
+                lineHeight: 1.2,
+                margin: '8px 0 0',
+                background: 'linear-gradient(135deg, #92400e 0%, #d97706 35%, #fbbf24 60%, #d97706 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
                 A Beautiful Surprise Awaits
               </h1>
-              <p className="text-gray-400 text-xs tracking-wide max-w-[260px] leading-relaxed font-light font-sans">
+
+              <p style={{
+                color: '#9ca3af',
+                fontSize: 12,
+                letterSpacing: '0.04em',
+                maxWidth: 260,
+                lineHeight: 1.7,
+                fontWeight: 300,
+                margin: '4px 0 0',
+              }}>
                 A dedicated cinematic birthday card crafted elegantly for you.
               </p>
             </motion.div>
 
-            {/* Circular Glow Start Button */}
+            {/* Start button */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="z-10 pointer-events-auto flex flex-col items-center gap-4"
+              style={{ zIndex: 10, pointerEvents: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}
             >
               <motion.button
-                id="start-experience-button"
                 onClick={handleStartExperience}
-                whileHover={{ 
-                  scale: 1.1,
-                  boxShadow: '0 0 35px rgba(251, 191, 36, 0.45)'
+                whileHover={{ scale: 1.12 }}
+                whileTap={{ scale: 0.93 }}
+                style={{
+                  width: 80, height: 80,
+                  borderRadius: '50%',
+                  background: 'linear-gradient(135deg, #FCD34D 0%, #F59E0B 50%, #D97706 100%)',
+                  border: '2px solid rgba(253,224,71,0.6)',
+                  boxShadow: '0 0 0 10px rgba(251,191,36,0.12), 0 16px 32px rgba(251,191,36,0.35)',
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'box-shadow 0.3s ease',
                 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-300 via-amber-400 to-amber-500 border border-amber-200 shadow-[0_15px_30px_rgba(251,191,36,0.3)] hover:shadow-[0_20px_45px_rgba(251,191,36,0.45)] text-white flex items-center justify-center transition-shadow cursor-pointer outline-none relative group ring-8 ring-amber-50/50"
               >
-                {/* Internal Shimmer Wave Component */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] pointer-events-none" />
-                <Play className="w-8 h-8 fill-white translate-x-[2px] transition-transform group-hover:scale-110" />
+                <Play style={{ width: 32, height: 32, fill: '#fff', marginLeft: 4 }} />
               </motion.button>
-              
-              <span className="text-gray-400 text-[10px] uppercase tracking-[0.3em] font-medium font-sans animate-pulse">
+
+              <motion.span
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                style={{
+                  color: '#9ca3af',
+                  fontSize: 10,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.3em',
+                  fontWeight: 500,
+                }}
+              >
                 Tap to Open
-              </span>
+              </motion.span>
             </motion.div>
+
+            {/* Decorative sparkle dots at corners */}
+            {[
+              { top: '15%', left: '12%' }, { top: '20%', right: '15%' },
+              { bottom: '20%', left: '18%' }, { bottom: '15%', right: '12%' },
+            ].map((pos, i) => (
+              <motion.div
+                key={i}
+                animate={{ scale: [0.8, 1.4, 0.8], opacity: [0.3, 0.8, 0.3] }}
+                transition={{ duration: 2.5 + i * 0.4, repeat: Infinity, delay: i * 0.6 }}
+                style={{
+                  position: 'absolute',
+                  width: 6, height: 6,
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle, #FFD700, #F59E0B)',
+                  boxShadow: '0 0 8px rgba(251,191,36,0.6)',
+                  pointerEvents: 'none',
+                  ...pos,
+                }}
+              />
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Floating Storyteller Modals */}
       {step !== 'SPLASH' && (
         <CardStoryteller
           currentStep={step}
@@ -128,6 +264,14 @@ export default function App() {
           onReset={handleResetExperience}
         />
       )}
+
+      {/* Inline keyframes for spin (used by lucide Sparkles above) */}
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
