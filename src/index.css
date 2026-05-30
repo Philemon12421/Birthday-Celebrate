@@ -1,30 +1,27 @@
 /* ==========================================================================
-   Birthday Surprise — Enhanced Styles
+   CRITICAL: Tailwind CSS directives — MUST stay at the very top
    ========================================================================== */
-
-/* ── Base & Font imports ── */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;600;700&display=swap');
-
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ── Font utility classes ── */
-.font-serif { font-family: 'Playfair Display', Georgia, serif !important; }
-.font-sans  { font-family: 'Poppins', system-ui, sans-serif !important; }
-.font-handwritten { font-family: 'Dancing Script', cursive !important; }
-.font-mono  { font-family: 'Courier New', Courier, monospace !important; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* ==========================================================================
-   Aurora background — layered radial colour orbs that drift slowly
+   Font imports
    ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;600;700&display=swap');
+
+/* ==========================================================================
+   Font utility classes
+   ========================================================================== */
+.font-serif       { font-family: 'Playfair Display', Georgia, serif !important; }
+.font-sans        { font-family: 'Poppins', system-ui, sans-serif !important; }
+.font-handwritten { font-family: 'Dancing Script', cursive !important; }
+
+/* ==========================================================================
+   Aurora background layers
+   ========================================================================== */
+body { position: relative; }
+
 body::before,
 body::after {
   content: '';
@@ -34,99 +31,74 @@ body::after {
   z-index: 0;
 }
 
-/* First aurora layer — warm gold/amber haze */
 body::before {
   background:
-    radial-gradient(ellipse 70% 55% at 20% 15%, rgba(251,191,36,0.13) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 50% at 80% 85%, rgba(253,224,71,0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(254,243,199,0.08) 0%, transparent 55%);
+    radial-gradient(ellipse 70% 55% at 20% 15%, rgba(251,191,36,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 80% 85%, rgba(253,224,71,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(254,243,199,0.06) 0%, transparent 55%);
   animation: aurora-drift-1 18s ease-in-out infinite alternate;
 }
 
-/* Second aurora layer — rose/pink accent */
 body::after {
   background:
-    radial-gradient(ellipse 55% 45% at 85% 20%, rgba(251,207,232,0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(252,231,243,0.08) 0%, transparent 55%);
+    radial-gradient(ellipse 55% 45% at 85% 20%, rgba(251,207,232,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 10% 80%, rgba(252,231,243,0.06) 0%, transparent 55%);
   animation: aurora-drift-2 24s ease-in-out infinite alternate;
 }
 
 @keyframes aurora-drift-1 {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(3%, 2%) scale(1.04); }
+  0%   { transform: translate(0, 0)    scale(1);    }
+  33%  { transform: translate(3%, 2%)  scale(1.04); }
   66%  { transform: translate(-2%, 4%) scale(0.97); }
   100% { transform: translate(2%, -3%) scale(1.02); }
 }
 
 @keyframes aurora-drift-2 {
-  0%   { transform: translate(0, 0) scale(1); }
+  0%   { transform: translate(0, 0)    scale(1);    }
   50%  { transform: translate(-4%, 3%) scale(1.05); }
   100% { transform: translate(3%, -2%) scale(0.98); }
 }
 
 /* ==========================================================================
-   Shimmer sweep animation (used on buttons, polaroid hover)
+   Shimmer sweep
    ========================================================================== */
 @keyframes shimmer {
   0%   { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
+  100% { transform: translateX(200%);  }
 }
 
 /* ==========================================================================
-   Spinning slow animation
-   ========================================================================== */
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
-}
-
-/* ==========================================================================
-   Floating pulse animation for decorative elements
+   Float animation
    ========================================================================== */
 @keyframes float-gentle {
-  0%, 100% { transform: translateY(0px); }
+  0%, 100% { transform: translateY(0px);  }
   50%       { transform: translateY(-8px); }
 }
-
-.animate-float {
-  animation: float-gentle 4s ease-in-out infinite;
-}
+.animate-float { animation: float-gentle 4s ease-in-out infinite; }
 
 /* ==========================================================================
-   Heartbeat pulse for heart icons
+   Heartbeat
    ========================================================================== */
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  14%      { transform: scale(1.2); }
-  28%      { transform: scale(1); }
+  0%, 100% { transform: scale(1);    }
+  14%      { transform: scale(1.2);  }
+  28%      { transform: scale(1);    }
   42%      { transform: scale(1.15); }
-  70%      { transform: scale(1); }
+  70%      { transform: scale(1);    }
 }
-
-.animate-heartbeat {
-  animation: heartbeat 1.6s ease-in-out infinite;
-}
+.animate-heartbeat { animation: heartbeat 1.6s ease-in-out infinite; }
 
 /* ==========================================================================
-   Gold shimmer text effect (applied to headings on final step)
+   Gold shimmer text
    ========================================================================== */
 @keyframes gold-shimmer-text {
   0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  100% { background-position:  200% center; }
 }
-
 .text-gold-shimmer {
   background: linear-gradient(
     90deg,
-    #B8860B 0%,
-    #FFD700 25%,
-    #FFF8DC 50%,
-    #FFD700 75%,
-    #B8860B 100%
+    #B8860B 0%, #FFD700 25%, #FFF8DC 50%, #FFD700 75%, #B8860B 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -136,33 +108,12 @@ body::after {
 }
 
 /* ==========================================================================
-   Confetti ribbon streamers on splash screen entry
-   ========================================================================== */
-@keyframes ribbon-fall {
-  0%   { transform: translateY(-60px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-
-.ribbon {
-  position: fixed;
-  top: -60px;
-  width: 8px;
-  height: 24px;
-  border-radius: 2px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 60;
-  animation: ribbon-fall linear forwards;
-}
-
-/* ==========================================================================
-   Scratch card — enhanced gold shimmer overlay
+   Foil shimmer overlay
    ========================================================================== */
 @keyframes foil-shimmer {
   0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  100% { background-position:  200% 0; }
 }
-
 .foil-shimmer-overlay {
   position: absolute;
   inset: 0;
@@ -179,95 +130,43 @@ body::after {
 }
 
 /* ==========================================================================
-   3D card flip transition helper
-   ========================================================================== */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-/* ==========================================================================
-   Custom scrollbar for letter panel
-   ========================================================================== */
-.overflow-y-auto::-webkit-scrollbar {
-  width: 4px;
-}
-.overflow-y-auto::-webkit-scrollbar-track {
-  background: rgba(251,191,36,0.05);
-  border-radius: 4px;
-}
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: rgba(251,191,36,0.35);
-  border-radius: 4px;
-}
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: rgba(251,191,36,0.6);
-}
-
-/* ==========================================================================
-   Polaroid hover tilt utilities (applied via framer-motion in component)
-   ========================================================================== */
-.polaroid-card {
-  transform-style: preserve-3d;
-  will-change: transform, box-shadow;
-  transition: box-shadow 0.4s ease;
-}
-
-/* ==========================================================================
-   Wax seal pulse on letter
+   Wax seal pulse
    ========================================================================== */
 @keyframes wax-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0.4); }
-  50%       { box-shadow: 0 0 0 6px rgba(251,191,36,0); }
+  0%, 100% { box-shadow: 0 0 0 0   rgba(251,191,36,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(251,191,36,0);   }
 }
-
-.wax-seal {
-  animation: wax-pulse 2s ease-in-out infinite;
-}
+.wax-seal { animation: wax-pulse 2s ease-in-out infinite; }
 
 /* ==========================================================================
-   Splash screen entrance ring spin
-   ========================================================================== */
-@keyframes ring-spin-cw {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-@keyframes ring-spin-ccw {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
-}
-
-/* ==========================================================================
-   Smoke trail keyframe for blown candles (JS-driven via motion/react)
-   ========================================================================== */
-@keyframes smoke-rise {
-  0%   { opacity: 0.5; transform: translateY(0) scaleX(1); }
-  100% { opacity: 0; transform: translateY(-30px) scaleX(1.8); }
-}
-
-/* ==========================================================================
-   Progress bar glow pulse
+   Progress bar glow
    ========================================================================== */
 @keyframes progress-glow {
-  0%, 100% { box-shadow: 0 0 4px rgba(251,191,36,0.4); }
+  0%, 100% { box-shadow: 0 0 4px  rgba(251,191,36,0.4); }
   50%       { box-shadow: 0 0 10px rgba(251,191,36,0.7); }
 }
-
-.progress-bar-inner {
-  animation: progress-glow 2s ease-in-out infinite;
-}
+.progress-bar-inner { animation: progress-glow 2s ease-in-out infinite; }
 
 /* ==========================================================================
-   Backdrop blur utility (Tailwind already handles this — kept for safety)
+   Custom scrollbar for letter
    ========================================================================== */
-.backdrop-blur-md {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
+.overflow-y-auto::-webkit-scrollbar       { width: 4px; }
+.overflow-y-auto::-webkit-scrollbar-track { background: rgba(251,191,36,0.05); border-radius: 4px; }
+.overflow-y-auto::-webkit-scrollbar-thumb { background: rgba(251,191,36,0.35);  border-radius: 4px; }
+.overflow-y-auto::-webkit-scrollbar-thumb:hover { background: rgba(251,191,36,0.6); }
 
 /* ==========================================================================
-   Selection styling
+   Selection highlight
    ========================================================================== */
 ::selection {
   background: rgba(251,191,36,0.25);
   color: #78350f;
+}
+
+/* ==========================================================================
+   Backdrop blur (older Safari safety)
+   ========================================================================== */
+.backdrop-blur-md {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
